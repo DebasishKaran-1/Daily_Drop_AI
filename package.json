@@ -1,0 +1,32 @@
+{
+  "name": "dailydrop",
+  "version": "1.0.0",
+  "description": "A premium, modern web application that delivers AI-curated daily news summaries designed for busy professionals who want to stay informed in under 5 minutes.",
+  "main": "script.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "nodemon backend/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "bcryptjs": "^3.0.3",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.5.2",
+    "groq-sdk": "^1.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.1.5",
+    "node-cron": "^4.2.1",
+    "nodemailer": "^8.0.11",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
+    "rss-parser": "^3.13.0"
+  }
+}

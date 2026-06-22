@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DailyDrop - AI-Powered News Digest</title>
+    <meta name="description"
+        content="Get the most important news of the day in 5 minutes. AI-powered daily news summaries for busy professionals.">
+    <link rel="stylesheet" href="style.css?v=footer-align-2">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="dark-theme">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <a href="index.html" class="logo-container">
+                    <div class="logo-icon">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M16 4L4 10V22L16 28L28 22V10L16 4Z" stroke="url(#logo-gradient)" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M16 16L4 10M16 16L28 10M16 16V28" stroke="url(#logo-gradient)" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <defs>
+                                <linearGradient id="logo-gradient" x1="4" y1="4" x2="28" y2="28"
+                                    gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#6366F1" />
+                                    <stop offset="1" stop-color="#8B5CF6" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <span class="logo-text">DailyDrop</span>
+                </a>
+                <div class="nav-links" id="desktopNav">
+                    <a href="#features" class="nav-link">Features</a>
+                    <a href="#how-it-works" class="nav-link">How it Works</a>
+                    <a href="signin.html" class="nav-link" id="authLink">Sign In</a>
+                    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenu">
+        <div class="mobile-menu-content">
+            <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+            </button>
+            <nav class="mobile-nav" id="mobileNav">
+                <a href="#features" class="mobile-nav-link">Features</a>
+                <a href="#how-it-works" class="mobile-nav-link">How it Works</a>
+                <a href="signin.html" class="mobile-nav-link" id="mobileAuthLink">Sign In</a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container hero-shell">
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <p class="hero-eyebrow">DailyDrop Intelligence Brief</p>
+                    <h1 class="hero-title">
+                        The calmest way to understand
+                        <span class="gradient-text">what matters next.</span>
+                    </h1>
+                    <p class="hero-description">
+                        DailyDrop turns global noise into a concise morning brief with the context,
+                        implications, and signals worth your attention in under five minutes.
+                    </p>
+                    <div class="hero-cta">
+                        <a href="digest.html" class="btn btn-primary" id="primaryCta">
+                            <span>View Today's Digest</span>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M7 4l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </a>
+                        <a href="#features" class="btn btn-secondary">
+                            <span>Learn More</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="hero-visual" aria-hidden="true">
+                    <div class="hero-orb hero-orb-one"></div>
+                    <div class="hero-orb hero-orb-two"></div>
+                    <div class="product-panel">
+                        <div class="product-panel-header">
+                            <div>
+                                <p class="panel-kicker">Today's intelligence brief</p>
+                                <h3 class="panel-title">DailyDrop Digest</h3>
+                            </div>
+                            <div class="panel-status">
+                                <span class="status-dot"></span>
+                                <span>Live Signals</span>
+                            </div>
+                        </div>
+
+                        <article class="panel-spotlight dashboard-floating">
+                            <div class="panel-spotlight-meta">
+                                <span class="panel-chip">Top Story</span>
+                                <span>Updated 08:00</span>
+                            </div>
+                            <h4>Markets rally as AI infrastructure spending pushes into a new cycle.</h4>
+                            <p>One clear brief explains the catalyst, the business impact, and what to watch across policy,
+                                tech, and public markets.</p>
+                            <div class="panel-spotlight-footer">
+                                <span class="mini-pill">3 min read</span>
+                                <span class="mini-pill">12 sources</span>
+                                <span class="mini-pill">High signal</span>
+                            </div>
+                        </article>
+
+                        <div class="product-panel-grid">
+                            <section class="signal-card">
+                                <div class="signal-card-header">
+                                    <span>Signal Pulse</span>
+                                    <strong>+18%</strong>
+                                </div>
+                                <div class="signal-bars" aria-hidden="true">
+                                    <span style="height: 34%"></span>
+                                    <span style="height: 52%"></span>
+                                    <span style="height: 46%"></span>
+                                    <span style="height: 76%"></span>
+                                    <span style="height: 68%"></span>
+                                    <span style="height: 92%"></span>
+                                </div>
+                                <div class="signal-list">
+                                    <div class="signal-list-row">
+                                        <span>Technology</span>
+                                        <strong>92</strong>
+                                    </div>
+                                    <div class="signal-list-row">
+                                        <span>Markets</span>
+                                        <strong>81</strong>
+                                    </div>
+                                    <div class="signal-list-row">
+                                        <span>Policy</span>
+                                        <strong>74</strong>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="stream-card">
+                                <div class="stream-header">
+                                    <span>In this issue</span>
+                                    <span>6 briefings</span>
+                                </div>
+                                <div class="stream-list">
+                                    <div class="stream-item">
+                                        <span class="stream-dot stream-dot-blue"></span>
+                                        <div>
+                                            <strong>Semiconductor policy</strong>
+                                            <p>Export rules tighten as supply chains reposition.</p>
+                                        </div>
+                                    </div>
+                                    <div class="stream-item">
+                                        <span class="stream-dot stream-dot-violet"></span>
+                                        <div>
+                                            <strong>Energy transition</strong>
+                                            <p>New incentives sharpen the race for grid storage.</p>
+                                        </div>
+                                    </div>
+                                    <div class="stream-item">
+                                        <span class="stream-dot stream-dot-cyan"></span>
+                                        <div>
+                                            <strong>Enterprise AI</strong>
+                                            <p>Platform winners emerge as budgets consolidate.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+
+                    <div class="floating-metric metric-one dashboard-floating">
+                        <strong>07:30</strong>
+                        <span>Inbox-ready each morning</span>
+                    </div>
+                    <div class="floating-metric metric-two dashboard-floating">
+                        <strong>58 sources</strong>
+                        <span>Triaged before the brief ships</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-proof-row">
+                <div class="hero-proof">
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">5 min</div>
+                            <div class="stat-label">Average read time</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">58+</div>
+                            <div class="stat-label">Trusted sources filtered</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">24/7</div>
+                            <div class="stat-label">Continuously updated</div>
+                        </div>
+                    </div>
+                    <div class="hero-trust">
+                        <span class="hero-trust-label">Built for the first tab opened each morning</span>
+                        <div class="hero-trust-pills">
+                            <span class="trust-pill">Founders</span>
+                            <span class="trust-pill">Operators</span>
+                            <span class="trust-pill">Investors</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="features-header">
+                <div class="features-header-copy">
+                    <p class="features-kicker">Why DailyDrop</p>
+                    <h2 class="features-title">A premium briefing layer for people who cannot afford noise.</h2>
+                    <p class="features-subtitle">Everything you need to stay informed, prioritized, and calm before the
+                        day accelerates.</p>
+                </div>
+                <div class="features-header-note">
+                    <span class="features-note-label">Built for signal-first mornings</span>
+                    <p>From source triage to importance scoring, DailyDrop is designed to feel like a clean operating
+                        system for the global news cycle.</p>
+                </div>
+            </div>
+            <div class="features-bento">
+                <article class="feature-card feature-card-primary feature-card-ai">
+                    <div class="feature-card-top">
+                        <span class="feature-pill">Core Engine</span>
+                        <div class="feature-emblem feature-emblem-violet">
+                            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                <path d="M16 4L4 10V22L16 28L28 22V10L16 4Z" stroke="currentColor" stroke-width="2" />
+                                <path d="M16 16L4 10M16 16L28 10M16 16V28" stroke="currentColor" stroke-width="2" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="feature-card-copy">
+                        <h3 class="feature-card-title">AI-Powered Curation</h3>
+                        <p class="feature-card-description">Advanced algorithms analyze thousands of sources to surface
+                            only the stories that deserve your attention.</p>
+                    </div>
+                    <div class="feature-card-detail">
+                        <span class="feature-detail-label">What it unlocks</span>
+                        <div class="feature-tag-row">
+                            <span class="feature-tag">Cross-source filtering</span>
+                            <span class="feature-tag">Context-aware ranking</span>
+                            <span class="feature-tag">Noise removed upstream</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="feature-card feature-card-secondary feature-card-time">
+                    <div class="feature-card-top">
+                        <span class="feature-pill">Daily Ritual</span>
+                        <div class="feature-emblem feature-emblem-pink">
+                            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                <circle cx="16" cy="16" r="12" stroke="currentColor" stroke-width="2" />
+                                <path d="M16 8V16L20 20" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="feature-card-copy">
+                        <h3 class="feature-card-title">5-Minute Digests</h3>
+                        <p class="feature-card-description">Get up to speed on global events in less time than your
+                            morning coffee.</p>
+                    </div>
+                    <div class="feature-micro-line">
+                        <span>Concise brief</span>
+                        <span>Ready before the day starts</span>
+                    </div>
+                </article>
+
+                <article class="feature-card feature-card-secondary feature-card-grid">
+                    <div class="feature-card-top">
+                        <span class="feature-pill">Control Layer</span>
+                        <div class="feature-emblem feature-emblem-cyan">
+                            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                <rect x="6" y="6" width="20" height="20" rx="4" stroke="currentColor" stroke-width="2" />
+                                <path d="M12 6V26M20 6V26M6 14H26M6 20H26" stroke="currentColor" stroke-width="2" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="feature-card-copy">
+                        <h3 class="feature-card-title">Smart Categorization</h3>
+                        <p class="feature-card-description">Filter by topics that matter to you across tech, business,
+                            science, politics, and more.</p>
+                    </div>
+                    <div class="feature-mini-grid" aria-hidden="true">
+                        <span>Tech</span>
+                        <span>Business</span>
+                        <span>Science</span>
+                        <span>Policy</span>
+                    </div>
+                </article>
+
+                <article class="feature-card feature-card-secondary feature-card-signal">
+                    <div class="feature-card-top">
+                        <span class="feature-pill">Decision Signal</span>
+                        <div class="feature-emblem feature-emblem-amber">
+                            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                <path d="M16 4L20 12L28 14L22 20L24 28L16 24L8 28L10 20L4 14L12 12L16 4Z"
+                                    stroke="currentColor" stroke-width="2" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="feature-card-copy">
+                        <h3 class="feature-card-title">Importance Scoring</h3>
+                        <p class="feature-card-description">See at a glance which stories are truly critical with AI
+                            importance ratings.</p>
+                    </div>
+                    <div class="feature-signal-scale" aria-hidden="true">
+                        <span class="signal-high">High</span>
+                        <span class="signal-medium">Medium</span>
+                        <span class="signal-low">Low</span>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <div class="how-header">
+                <div class="how-header-copy">
+                    <p class="how-kicker">How DailyDrop Works</p>
+                    <h2 class="how-title">From global noise to a calm morning brief in three elegant steps.</h2>
+                    <p class="how-subtitle">DailyDrop transforms the world’s messiest information stream into a clean,
+                        high-signal ritual you can trust before the day compounds.</p>
+                </div>
+                <div class="how-header-note">
+                    <span class="how-note-label">Designed for speed and clarity</span>
+                    <p>Each stage removes friction so you move from scanning to understanding to action without wasting
+                        attention.</p>
+                </div>
+            </div>
+            <div class="how-timeline">
+                <div class="timeline-track" aria-hidden="true"></div>
+
+                <article class="step-card step-card-scan">
+                    <div class="step-card-top">
+                        <span class="step-number">01</span>
+                        <div class="step-icon step-icon-blue">
+                            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                                <path d="M14 4C8.477 4 4 8.477 4 14s4.477 10 10 10 10-4.477 10-10" stroke="currentColor"
+                                    stroke-width="1.8" stroke-linecap="round" />
+                                <path d="M17.5 4H24v6.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M24 4l-7.5 7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="step-body">
+                        <span class="step-label">Source Layer</span>
+                        <h3 class="step-title">AI monitors trusted global sources.</h3>
+                        <p class="step-description">DailyDrop continuously scans credible outlets across markets,
+                            policy, science, and technology.</p>
+                    </div>
+                    <div class="step-footer">
+                        <span>50+ trusted feeds</span>
+                        <span>Always filtering</span>
+                    </div>
+                </article>
+
+                <article class="step-card step-card-summarize">
+                    <div class="step-card-top">
+                        <span class="step-number">02</span>
+                        <div class="step-icon step-icon-violet">
+                            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                                <path d="M9 7.5h10M9 12h10M9 16.5h6" stroke="currentColor" stroke-width="1.8"
+                                    stroke-linecap="round" />
+                                <path d="M7.5 4h13A2.5 2.5 0 0123 6.5v15l-4-2.5-4 2.5-4-2.5-4 2.5v-15A2.5 2.5 0 017.5 4z"
+                                    stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="step-body">
+                        <span class="step-label">Intelligence Layer</span>
+                        <h3 class="step-title">AI distills the chaos into clean summaries.</h3>
+                        <p class="step-description">The system condenses what matters, adds context, and strips out the
+                            repetition that wastes time.</p>
+                    </div>
+                    <div class="step-footer">
+                        <span>Sharper context</span>
+                        <span>Noise removed</span>
+                    </div>
+                </article>
+
+                <article class="step-card step-card-deliver">
+                    <div class="step-card-top">
+                        <span class="step-number">03</span>
+                        <div class="step-icon step-icon-cyan">
+                            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                                <path d="M14 5v8l5 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                                <circle cx="14" cy="14" r="9" stroke="currentColor" stroke-width="1.8" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="step-body">
+                        <span class="step-label">Delivery Layer</span>
+                        <h3 class="step-title">Delivered daily in minutes, not hours.</h3>
+                        <p class="step-description">You wake up to a concise brief that helps you orient quickly and
+                            decide what deserves deeper attention.</p>
+                    </div>
+                    <div class="step-footer">
+                        <span>Inbox-ready cadence</span>
+                        <span>Built for busy mornings</span>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-panel">
+                <div class="cta-panel-copy">
+                    <p class="cta-kicker">Ready when you are</p>
+                    <h2 class="cta-title">Start your day informed with a briefing that feels calm, sharp, and premium.</h2>
+                    <p class="cta-description">Join thousands of professionals who trust DailyDrop to turn global noise
+                        into a clean daily decision advantage.</p>
+                </div>
+                <div class="cta-panel-actions">
+                    <a href="digest.html" class="btn btn-primary btn-large cta-button">
+                        <span>Read Today's Digest</span>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M7 4l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                    <div class="cta-meta">
+                        <span class="cta-meta-pill">5-minute read</span>
+                        <span class="cta-meta-pill">50+ trusted sources</span>
+                        <span class="cta-meta-pill">Signal-first delivery</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-divider" aria-hidden="true"></div>
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo-container">
+                        <div class="logo-icon">
+                            <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M16 4L4 10V22L16 28L28 22V10L16 4Z" stroke="url(#logo-gradient-footer)"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M16 16L4 10M16 16L28 10M16 16V28" stroke="url(#logo-gradient-footer)"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                <defs>
+                                    <linearGradient id="logo-gradient-footer" x1="4" y1="4" x2="28" y2="28"
+                                        gradientUnits="userSpaceOnUse">
+                                        <stop stop-color="#6366F1" />
+                                        <stop offset="1" stop-color="#8B5CF6" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                        <span class="logo-text">DailyDrop</span>
+                    </a>
+                    <p class="footer-tagline">The world's news, distilled daily.</p>
+                    <p class="footer-description">A premium daily intelligence brief for busy professionals who want
+                        clarity before the day gets noisy.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4 class="footer-heading">Product</h4>
+                        <a href="#" class="footer-link">Features</a>
+                        <a href="#" class="footer-link">Pricing</a>
+                        <a href="#" class="footer-link">API</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4 class="footer-heading">Company</h4>
+                        <a href="#" class="footer-link">About</a>
+                        <a href="#" class="footer-link">Blog</a>
+                        <a href="#" class="footer-link">Careers</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4 class="footer-heading">Legal</h4>
+                        <a href="#" class="footer-link">Privacy</a>
+                        <a href="#" class="footer-link">Terms</a>
+                        <a href="#" class="footer-link">Security</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-copyright">© 2026 DailyDrop. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="script.js?v=category-fix-1"></script>
+</body>
+
+</html>
