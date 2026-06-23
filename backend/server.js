@@ -97,9 +97,14 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-// Enable CORS
+// Enable CORS — in production, restrict to the configured frontend origin.
+// In development, allow all origins for convenience.
+const allowedOrigin = process.env.NODE_ENV === 'production'
+    ? (process.env.FRONTEND_URL || false)
+    : true;
+
 app.use(cors({
-    origin: true,
+    origin: allowedOrigin,
     credentials: true
 }));
 
