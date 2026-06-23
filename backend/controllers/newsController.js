@@ -1,6 +1,7 @@
-const News                       = require('../models/News');
-const { fetchFromGoogleRSS }     = require('../services/googleRSSService');
-const normalizeCategory          = require('../utils/normalizeCategory');
+const News                              = require('../models/News');
+const { fetchFromGoogleRSS }            = require('../services/googleRSSService');
+const normalizeCategory                 = require('../utils/normalizeCategory');
+const { validateArticle, makeStats, logStats } = require('../utils/validateArticle');
 
 // ── Rate-limit GNews calls: once per 55 minutes ──────────────────────────
 let lastGNewsFetchAt = 0;
@@ -26,7 +27,6 @@ const cleanOldNews = async () => {
 const fetchFromHackerNews = async () => {
     console.log('[HN] All higher-priority sources unavailable — fetching from Hacker News API…');
 
-
     const extractDomain = (url = '') => {
         try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return 'news'; }
     };
@@ -34,40 +34,66 @@ const fetchFromHackerNews = async () => {
     // Fetch top story IDs
     const idsRes = await fetch('https://hacker-news.firebaseio.com/v0/topstories.json');
     const allIds = await idsRes.json();
-    const topIds = allIds.slice(0, 60); // grab top 60, filter to stories with URLs
+    const topIds = allIds.slice(0, 60);
 
-    let stored = 0;
-    const stories = await Promise.allSettled(
-        topIds.map(id => fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`).then(r => r.json()))
+    // Fetch all story items in parallel
+    const itemResults = await Promise.allSettled(
+        topIds.map(id =>
+            fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`).then(r => r.json())
+        )
     );
 
-    for (const result of stories) {
-        if (result.status !== 'fulfilled') continue;
-        const item = result.value;
-        if (!item || item.type !== 'story' || !item.url || !item.title) continue;
+    // Filter to stories with url + title
+    const candidates = itemResults
+        .filter(r => r.status === 'fulfilled')
+        .map(r => r.value)
+        .filter(item => item && item.type === 'story' && item.url && item.title);
+
+    const stats = makeStats();
+    stats.total = candidates.length;
+
+    // HN articles carry no images — validate URL reachability only
+    const checks = await Promise.allSettled(
+        candidates.map(async (item) => {
+            const result = await validateArticle(item.url, null, stats, { requireImage: false });
+            return { item, ...result };
+        })
+    );
+
+    let stored = 0;
+    for (const check of checks) {
+        if (check.status !== 'fulfilled') continue;
+        const { item, valid, reason } = check.value;
+
+        if (!valid) {
+            console.log(`[HN] Skip "${(item.title || '').slice(0, 60)}": ${reason}`);
+            continue;
+        }
 
         const publishedAt = new Date(item.time * 1000);
-        const domain = extractDomain(item.url);
-        const category = normalizeCategory(item.title);
+        const domain      = extractDomain(item.url);
+        const category    = normalizeCategory(item.title);
 
         await News.findOneAndUpdate(
             { url: item.url },
             {
-                title: item.title,
+                title:       item.title,
                 description: `${item.score || 0} points on Hacker News by ${item.by || 'anonymous'}`,
-                content: item.title,
-                source: { name: domain, url: `https://${domain}` },
-                url: item.url,
-                image: null,
+                content:     item.title,
+                source:      { name: domain, url: `https://${domain}` },
+                url:         item.url,
+                image:       null,
                 publishedAt,
                 category,
-                sourceType: 'hackernews'
+                sourceType:  'hackernews',
             },
             { upsert: true, new: true }
         );
         stored++;
+        stats.saved++;
     }
 
+    logStats('HN', stats);
     console.log(`[HN] Stored ${stored} Hacker News articles.`);
 
     if (stored > 0) {
@@ -214,6 +240,7 @@ exports.fetchAndStoreNews = async (_req, res) => {
 
         let totalStored = 0;
         const errors = [];
+        const stats = makeStats();
 
         for (const cat of categories) {
             try {
@@ -231,28 +258,49 @@ exports.fetchAndStoreNews = async (_req, res) => {
                     continue;
                 }
 
-                if (Array.isArray(data.articles)) {
-                    for (const article of data.articles) {
-                        const publishedDate = new Date(article.publishedAt);
-                        if (isNaN(publishedDate.getTime())) continue;
+                if (!Array.isArray(data.articles)) continue;
 
-                        await News.findOneAndUpdate(
-                            { url: article.url },
-                            {
-                                title: article.title,
-                                description: article.description,
-                                content: article.content,
-                                source: { name: article.source.name, url: article.source.url },
-                                url: article.url,
-                                image: article.image,
-                                publishedAt: publishedDate,
-                                category: cat.ui,
-                                sourceType: 'gnews'
-                            },
-                            { upsert: true, new: true }
-                        );
-                        totalStored++;
+                stats.total += data.articles.length;
+
+                // Validate all articles in this category concurrently —
+                // URL + image HEAD checks run in parallel per article,
+                // and all articles are checked simultaneously.
+                const checks = await Promise.allSettled(
+                    data.articles.map(async (article) => {
+                        const result = await validateArticle(article.url, article.image, stats);
+                        return { article, ...result };
+                    })
+                );
+
+                for (const check of checks) {
+                    if (check.status !== 'fulfilled') continue;
+                    const { article, valid, reason } = check.value;
+
+                    if (!valid) {
+                        console.log(`[GNews] Skip "${(article.title || '').slice(0, 60)}": ${reason}`);
+                        continue;
                     }
+
+                    const publishedDate = new Date(article.publishedAt);
+                    if (isNaN(publishedDate.getTime())) continue;
+
+                    await News.findOneAndUpdate(
+                        { url: article.url },
+                        {
+                            title:       article.title,
+                            description: article.description,
+                            content:     article.content,
+                            source:      { name: article.source.name, url: article.source.url },
+                            url:         article.url,
+                            image:       article.image,
+                            publishedAt: publishedDate,
+                            category:    cat.ui,
+                            sourceType:  'gnews',
+                        },
+                        { upsert: true, new: true }
+                    );
+                    totalStored++;
+                    stats.saved++;
                 }
             } catch (catErr) {
                 const msg = `Category ${cat.ui} fetch failed: ${catErr.message}`;
@@ -261,6 +309,7 @@ exports.fetchAndStoreNews = async (_req, res) => {
             }
         }
 
+        logStats('GNews', stats);
         console.log(`[GNews] Fetch complete — ${totalStored} articles stored.`);
 
         if (totalStored > 0) {
@@ -279,7 +328,8 @@ exports.fetchAndStoreNews = async (_req, res) => {
         if (res) {
             res.status(200).json({
                 success: true,
-                message: `Stored ${totalStored} articles. ${errors.join(' ')}`.trim()
+                message: `Stored ${totalStored} articles. ${errors.join(' ')}`.trim(),
+                stats,
             });
         }
 

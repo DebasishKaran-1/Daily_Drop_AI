@@ -3,6 +3,7 @@
 const Parser            = require('rss-parser');
 const News              = require('../models/News');
 const normalizeCategory = require('../utils/normalizeCategory');
+const { validateArticle, makeStats, logStats } = require('../utils/validateArticle');
 
 const parser = new Parser({
     customFields: {
@@ -112,11 +113,30 @@ exports.fetchFromGoogleRSS = async () => {
         })
     );
 
-    // Store articles
+    // Validate all enriched candidates concurrently before storing.
+    // Each article needs a reachable URL and a reachable image.
+    const stats = makeStats();
+    stats.total = candidates.length;
+
+    const validations = await Promise.allSettled(
+        enriched
+            .filter(r => r.status === 'fulfilled')
+            .map(async ({ value: { item, category, image } }) => {
+                const result = await validateArticle(item.link, image, stats);
+                return { item, category, image, ...result };
+            })
+    );
+
+    // Store valid articles
     let stored = 0;
-    for (const r of enriched) {
-        if (r.status !== 'fulfilled') continue;
-        const { item, category, image } = r.value;
+    for (const v of validations) {
+        if (v.status !== 'fulfilled') continue;
+        const { item, category, image, valid, reason } = v.value;
+
+        if (!valid) {
+            console.log(`[RSS] Skip "${(item.title || '').slice(0, 60)}": ${reason}`);
+            continue;
+        }
 
         const publishedAt = item.pubDate ? new Date(item.pubDate) : new Date();
         if (isNaN(publishedAt.getTime())) continue;
@@ -146,6 +166,7 @@ exports.fetchFromGoogleRSS = async () => {
             { upsert: true, new: true }
         );
         stored++;
+        stats.saved++;
     }
 
     // Purge GNews and HN articles only after confirming we have RSS content.
@@ -164,7 +185,7 @@ exports.fetchFromGoogleRSS = async () => {
         }
     }
 
-    const withImages = enriched.filter(r => r.status === 'fulfilled' && r.value.image).length;
-    console.log(`[RSS] Done — ${stored} stored, ${withImages}/${candidates.length} with images.`);
+    logStats('RSS', stats);
+    console.log(`[RSS] Done — ${stored} stored.`);
     return stored;
 };
