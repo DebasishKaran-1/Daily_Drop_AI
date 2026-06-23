@@ -1207,7 +1207,7 @@ if (document.querySelector('.archive-page')) {
 
         archiveData.forEach(item => {
             const card = document.createElement('a');
-            card.href = 'digest.html'; // In a real app, this would pass a date query param
+            card.href = '/digest.html'; // In a real app, this would pass a date query param
             card.className = 'archive-card fade-in';
             card.style.animationDelay = `${delayIndex * 0.1}s`;
             card.style.textDecoration = 'none';
@@ -1314,7 +1314,7 @@ const auth = {
             body: JSON.stringify({ email, password })
         });
         auth.storeSession(data);
-        window.location.href = 'index.html';
+        window.location.href = '/index.html';
     },
 
     signup: async (name, email, password) => {
@@ -1323,7 +1323,7 @@ const auth = {
             body: JSON.stringify({ name, email, password })
         });
         auth.storeSession(data);
-        window.location.href = 'index.html';
+        window.location.href = '/index.html';
     },
 
     logout: async () => {
@@ -1333,7 +1333,7 @@ const auth = {
             console.error('Logout error:', error);
         } finally {
             auth.clearSession();
-            window.location.href = 'index.html';
+            window.location.href = '/index.html';
         }
     },
 
@@ -1387,10 +1387,10 @@ const auth = {
 
         // Update CTA on landing page
         if (primaryCta && !auth.isAuthenticated()) {
-            primaryCta.href = 'signin.html';
+            primaryCta.href = '/signin.html';
             primaryCta.querySelector('span').textContent = 'Get Started';
         } else if (primaryCta && auth.isAuthenticated()) {
-            primaryCta.href = 'digest.html';
+            primaryCta.href = '/digest.html';
             primaryCta.querySelector('span').textContent = 'View Today\'s Digest';
         }
 
@@ -1401,7 +1401,7 @@ const auth = {
 
                 if (!document.getElementById('profileLink')) {
                     const profileLink = document.createElement('a');
-                    profileLink.href = 'index.html';
+                    profileLink.href = '/index.html';
                     profileLink.id = 'profileLink';
                     profileLink.className = 'nav-link nav-profile-link';
                     const _initial = (user.name || user.email || 'U').slice(0, 1).toUpperCase();
@@ -1431,7 +1431,7 @@ const auth = {
 
                 if (!document.getElementById('mobileProfile')) {
                     const mProfile = document.createElement('a');
-                    mProfile.href = 'index.html';
+                    mProfile.href = '/index.html';
                     mProfile.id = 'mobileProfile';
                     mProfile.className = 'mobile-nav-link';
                     mProfile.textContent = user.name ? `Profile · ${user.name}` : 'Profile';
@@ -1526,7 +1526,7 @@ if (resetPasswordForm) {
             await auth.resetPassword(token, document.getElementById('password').value);
             setFormMessage(resetPasswordForm, 'Password updated. Redirecting...', 'success');
             setTimeout(() => {
-                window.location.href = 'index.html';
+                window.location.href = '/index.html';
             }, 700);
         }, { keepSuccess: true });
     });
@@ -1542,7 +1542,7 @@ document.querySelectorAll('.social-btn').forEach(button => {
 document.querySelectorAll('.forgot-link').forEach(link => {
     link.addEventListener('click', (event) => {
         event.preventDefault();
-        window.location.href = 'forgot-password.html';
+        window.location.href = '/forgot-password.html';
     });
 });
 
