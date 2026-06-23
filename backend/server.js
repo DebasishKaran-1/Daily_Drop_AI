@@ -88,9 +88,6 @@ function validateStartupEnv() {
 
 validateStartupEnv();
 
-// Connect to database
-connectDB();
-
 const app = express();
 
 // Body parser
@@ -183,8 +180,13 @@ cron.schedule('0 8 * * *', async () => {
     }
 });
 
-const PORT = process.env.PORT || 5001; // Use 5001 as seen in .env
+const PORT = process.env.PORT || 5001;
 
+// Bind the port FIRST so Render's scanner always finds an open port.
+// connectDB is called inside the callback — if it fails and calls
+// process.exit(1), the port has already been detected and the actual
+// MongoDB error appears in Render's log instead of "Port scan timeout".
 app.listen(PORT, () => {
     console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
+    connectDB();
 });

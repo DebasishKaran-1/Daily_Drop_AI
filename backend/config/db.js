@@ -8,7 +8,10 @@ const connectDB = async () => {
         console.log(`📂 Database Name: ${conn.connection.db.databaseName}`);
     } catch (error) {
         console.error(`❌ MongoDB Connection Error: ${error.message}`);
-        process.exit(1);
+        // Delay exit so the HTTP server stays alive long enough for Render's
+        // port scanner to detect it and surface this error in the deploy log
+        // rather than showing the opaque "Port scan timeout" message.
+        setTimeout(() => process.exit(1), 3000);
     }
 };
 
